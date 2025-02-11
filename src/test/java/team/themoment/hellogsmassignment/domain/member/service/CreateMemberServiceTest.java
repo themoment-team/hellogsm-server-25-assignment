@@ -16,8 +16,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class Member_생성_Service_클래스의 {
+@DisplayName("Member 생성 Service 클래스의")
+class CreateMemberServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
@@ -26,16 +26,15 @@ class Member_생성_Service_클래스의 {
     private CreateMemberService createMemberService;
 
     @Nested
-    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-    class execute_메서드는 {
-
+    @DisplayName("execute 메서드는")
+    class describe_execute {
 
         @Nested
-        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-        class Member_생성_DTO_객체가_주어졌을_때 {
+        @DisplayName("Member 생성 DTO 객체가 주어졌을 때")
+        class context_with_create_member_dto {
 
             @Test
-            @DisplayName("DTO 객체의 정보에 따라 Member를 생성하여 save 한다.")
+            @DisplayName("DTO 객체의 정보에 따라 Member를 생성하여 저장한다.")
             void it_saves_member_according_to_dto() {
                 // given
                 CreateMemberReqDto reqDto = new CreateMemberReqDto(
@@ -59,8 +58,8 @@ class Member_생성_Service_클래스의 {
         }
 
         @Nested
-        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-        class 중복된_Email이_주어졌을_때 {
+        @DisplayName("중복된 Email이 주어졌을 때")
+        class context_with_duplicate_email {
 
             @Test
             @DisplayName("Email 중복 예외를 던진다.")
@@ -68,7 +67,7 @@ class Member_생성_Service_클래스의 {
                 // given
                 CreateMemberReqDto reqDto = new CreateMemberReqDto(
                         "홍길동",
-                        "s00001@@gsm.hs.kr",
+                        "s00001@gsm.hs.kr",
                         "010-1234-5678",
                         LocalDate.now()
                 );
@@ -78,12 +77,13 @@ class Member_생성_Service_클래스의 {
 
                 // then
                 Assertions.assertThrows(RuntimeException.class, () -> createMemberService.execute(reqDto));
+                verify(memberRepository).existsByEmail(reqDto.getEmail());
             }
         }
 
         @Nested
-        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-        class 중복된_PhoneNumber가_주어졌을_때 {
+        @DisplayName("중복된 PhoneNumber가 주어졌을 때")
+        class context_with_duplicate_phone_number {
 
             @Test
             @DisplayName("PhoneNumber 중복 예외를 던진다.")
@@ -102,6 +102,7 @@ class Member_생성_Service_클래스의 {
 
                 // then
                 Assertions.assertThrows(RuntimeException.class, () -> createMemberService.execute(reqDto));
+                verify(memberRepository).existsByPhoneNumber(reqDto.getPhoneNumber());
             }
         }
     }

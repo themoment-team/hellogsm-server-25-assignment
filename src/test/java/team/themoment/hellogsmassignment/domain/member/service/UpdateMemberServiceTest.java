@@ -17,8 +17,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class Member_업데이트_Service_클래스의 {
+@DisplayName("Member 업데이트 Service 클래스의")
+class UpdateMemberServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
@@ -26,16 +26,16 @@ class Member_업데이트_Service_클래스의 {
     @InjectMocks
     private UpdateMemberService updateMemberService;
 
-    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @Nested
-    class execute_메서드는 {
+    @DisplayName("execute 메서드는")
+    class describe_execute {
 
-        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
         @Nested
-        class Member_업데이트_DTO_객체가_주어졌을_때 {
+        @DisplayName("Member 업데이트 DTO 객체가 주어졌을 때")
+        class context_when_update_member_dto_provided {
 
-            @DisplayName("DTO 객체의 정보에 따라 Member의 정보를 업데이트하여 save 한다.")
             @Test
+            @DisplayName("DTO 객체의 정보에 따라 Member의 정보를 업데이트하여 save 한다.")
             void it_saves_member_according_to_dto() {
                 // given
                 UpdateMemberReqDto reqDto = new UpdateMemberReqDto(
@@ -76,11 +76,11 @@ class Member_업데이트_Service_클래스의 {
         }
 
         @Nested
-        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-        class 존재하지_않는_Member_ID가_주어졌을_때 {
+        @DisplayName("존재하지 않는 Member ID가 주어졌을 때")
+        class context_when_member_id_does_not_exist {
 
-            @DisplayName("Member ID 찾을 수 없음 예외를 던진다.")
             @Test
+            @DisplayName("Member ID 찾을 수 없음 예외를 던진다.")
             void it_throws_exception_when_member_id_does_not_exist() {
                 // given
                 UpdateMemberReqDto reqDto = new UpdateMemberReqDto(
@@ -104,11 +104,11 @@ class Member_업데이트_Service_클래스의 {
         }
 
         @Nested
-        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-        class 중복된_Email이_주어졌을_때 {
+        @DisplayName("중복된 Email이 주어졌을 때")
+        class context_when_duplicate_email_provided {
 
-            @DisplayName("Email 중복 예외를 던진다.")
             @Test
+            @DisplayName("Email 중복 예외를 던진다.")
             void it_throws_exception_when_email_is_duplicated() {
                 // given
                 UpdateMemberReqDto reqDto = new UpdateMemberReqDto(
@@ -128,11 +128,11 @@ class Member_업데이트_Service_클래스의 {
         }
 
         @Nested
-        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-        class 중복된_PhoneNumber가_주어졌을_때 {
+        @DisplayName("중복된 PhoneNumber가 주어졌을 때")
+        class context_when_duplicated_phone_number_provided {
 
-            @DisplayName("PhoneNumber 중복 예외를 던진다.")
             @Test
+            @DisplayName("PhoneNumber 중복 예외를 던진다.")
             void it_throws_exception_when_phone_number_is_duplicated() {
                 // given
                 UpdateMemberReqDto reqDto = new UpdateMemberReqDto(

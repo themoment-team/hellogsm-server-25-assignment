@@ -17,8 +17,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class Member_조회_Service_클래스의 {
+@DisplayName("Member 조회 Service 클래스의")
+class FoundMemberServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
@@ -26,13 +26,13 @@ class Member_조회_Service_클래스의 {
     @InjectMocks
     private FoundMemberService foundMemberService;
 
-    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    @DisplayName("execute 메서드는")
     @Nested
-    class execute_메서드는 {
+    class describe_execute {
 
-        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+        @DisplayName("Member ID가 주어졌을 때")
         @Nested
-        class Member_ID가_주어졌을_때 {
+        class exist_member_id {
 
             @DisplayName("Member를 조회하여 적절한 ResDTO를 반환한다.")
             @Test
@@ -61,9 +61,9 @@ class Member_조회_Service_클래스의 {
             }
         }
 
-        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+        @DisplayName("존재하지 않는 Member ID가 주어졌을 때")
         @Nested
-        class 존재하지_않는_Member_ID가_주어졌을_때 {
+        class non_exist_member_id {
 
             @DisplayName("Member ID 찾을 수 없음 예외를 던진다.")
             @Test
