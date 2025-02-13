@@ -57,7 +57,7 @@ class CreateMemberServiceTest {
                 // then
                 verify(memberRepository).existsByEmail(reqDto.getEmail());
                 verify(memberRepository).existsByPhoneNumber(reqDto.getPhoneNumber());
-                verify(memberRepository).save(any(Member.class));
+                verify(memberRepository).save(memberCaptor.capture());
 
                 assertEquals(reqDto.getName(), memberCaptor.getValue().getName());
                 assertEquals(reqDto.getEmail(), memberCaptor.getValue().getEmail());
