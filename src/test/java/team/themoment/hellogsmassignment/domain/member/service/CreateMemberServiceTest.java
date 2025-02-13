@@ -2,6 +2,7 @@ package team.themoment.hellogsmassignment.domain.member.service;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -11,6 +12,7 @@ import team.themoment.hellogsmassignment.domain.member.repo.MemberRepository;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -47,6 +49,8 @@ class CreateMemberServiceTest {
                 when(memberRepository.existsByEmail(reqDto.getEmail())).thenReturn(false);
                 when(memberRepository.existsByPhoneNumber(reqDto.getPhoneNumber())).thenReturn(false);
 
+                ArgumentCaptor<Member> memberCaptor = ArgumentCaptor.forClass(Member.class);
+
                 // when
                 createMemberService.execute(reqDto);
 
@@ -54,6 +58,11 @@ class CreateMemberServiceTest {
                 verify(memberRepository).existsByEmail(reqDto.getEmail());
                 verify(memberRepository).existsByPhoneNumber(reqDto.getPhoneNumber());
                 verify(memberRepository).save(any(Member.class));
+
+                assertEquals(reqDto.getName(), memberCaptor.getValue().getName());
+                assertEquals(reqDto.getEmail(), memberCaptor.getValue().getEmail());
+                assertEquals(reqDto.getPhoneNumber(), memberCaptor.getValue().getPhoneNumber());
+                assertEquals(reqDto.getBirth(), memberCaptor.getValue().getBirth());
             }
         }
 
@@ -72,10 +81,9 @@ class CreateMemberServiceTest {
                         LocalDate.now()
                 );
 
-                // when
                 when(memberRepository.existsByEmail(reqDto.getEmail())).thenReturn(true);
 
-                // then
+                // when & then
                 Assertions.assertThrows(RuntimeException.class, () -> createMemberService.execute(reqDto));
                 verify(memberRepository).existsByEmail(reqDto.getEmail());
             }
@@ -96,11 +104,10 @@ class CreateMemberServiceTest {
                         LocalDate.now()
                 );
 
-                // when
                 when(memberRepository.existsByEmail(reqDto.getEmail())).thenReturn(false);
                 when(memberRepository.existsByPhoneNumber(reqDto.getPhoneNumber())).thenReturn(true);
 
-                // then
+                // when & then
                 Assertions.assertThrows(RuntimeException.class, () -> createMemberService.execute(reqDto));
                 verify(memberRepository).existsByPhoneNumber(reqDto.getPhoneNumber());
             }
