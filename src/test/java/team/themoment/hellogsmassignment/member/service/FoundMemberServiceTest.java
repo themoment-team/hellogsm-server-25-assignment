@@ -45,9 +45,11 @@ public class FoundMemberServiceTest {
 
             @BeforeEach
             void setUp() {
+                // given
                 member = Member.builder()
                         .id(memberId)
                         .email("email@email.com")
+                        .name("김겸비")
                         .birth(LocalDate.of(2009, 3, 28))
                         .phoneNumber("01012345678")
                         .build();
@@ -58,8 +60,10 @@ public class FoundMemberServiceTest {
             @Test
             @DisplayName("Member를 조회하여 적절한 ResDTO를 반환한다.")
             void it_query_member_response_resDto() {
+                // when
                 FoundMemberResDto resDto = foundMemberService.execute(member.getId());
 
+                // then
                 assertEquals(member.getId(), memberId);
                 assertEquals(member.getName(), resDto.name());
                 assertEquals(member.getPhoneNumber(), resDto.phoneNumber());
@@ -73,12 +77,14 @@ public class FoundMemberServiceTest {
 
             @BeforeEach
             void setUp() {
+                // given
                 given(memberRepository.findById(memberId)).willReturn(Optional.empty());
             }
 
             @Test
             @DisplayName("Member ID 찾을 수 없음 예외를 던진다.")
             void it_throws_not_found_member_id_exception() {
+                // when, then
                 assertThrows(RuntimeException.class, () -> foundMemberService.execute(memberId));
             }
         }

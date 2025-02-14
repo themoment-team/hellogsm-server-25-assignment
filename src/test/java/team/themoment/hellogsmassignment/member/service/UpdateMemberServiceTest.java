@@ -66,6 +66,7 @@ public class UpdateMemberServiceTest {
 
             @BeforeEach
             void setUp() {
+                // given
                 given(memberRepository.existsByEmail(reqDto.getEmail())).willReturn(false);
                 given(memberRepository.existsByPhoneNumber(reqDto.getPhoneNumber())).willReturn(false);
                 given(memberRepository.findById(memberId)).willReturn(Optional.of(member));
@@ -74,7 +75,10 @@ public class UpdateMemberServiceTest {
             @Test
             @DisplayName("DTO 객체의 정보에 따라 Member를 업데이트하여 save 한다.")
             void it_update_member_info_about_dto_and_save() {
+                // when
                 updateMemberService.execute(memberId, reqDto);
+
+                // then
                 ArgumentCaptor<Member> memberCaptor = ArgumentCaptor.forClass(Member.class);
                 verify(memberRepository).save(memberCaptor.capture());
                 Member capturedMember = memberCaptor.getValue();
@@ -93,12 +97,14 @@ public class UpdateMemberServiceTest {
 
             @BeforeEach
             void setUp() {
+                // given
                 given(memberRepository.findById(memberId)).willReturn(Optional.empty());
             }
 
             @Test
             @DisplayName("Member ID 찾을 수 없음 예외를 던진다.")
             void it_throws_not_found_member_id_exception() {
+                // when + then
                 assertThrows(RuntimeException.class, () -> foundMemberService.execute(memberId));
             }
         }
@@ -109,12 +115,14 @@ public class UpdateMemberServiceTest {
 
             @BeforeEach
             void setUp() {
+                // given
                 given(memberRepository.existsByEmail(reqDto.getEmail())).willReturn(true);
             }
 
             @Test
             @DisplayName("Email 중복 예외를 던진다.")
             void it_throws_email_existing_exception() {
+                // when + then
                 assertThrows(RuntimeException.class, () -> updateMemberService.execute(memberId, reqDto));
             }
         }
@@ -125,12 +133,14 @@ public class UpdateMemberServiceTest {
 
             @BeforeEach
             void setUp() {
+                // given
                 given(memberRepository.existsByPhoneNumber(reqDto.getPhoneNumber())).willReturn(true);
             }
 
             @Test
             @DisplayName("PhoneNumber 중복 예외를 던진다.")
             void it_throws_phone_number_existing_exception() {
+                // when + then
                 assertThrows(RuntimeException.class, () -> updateMemberService.execute(memberId, reqDto));
             }
         }

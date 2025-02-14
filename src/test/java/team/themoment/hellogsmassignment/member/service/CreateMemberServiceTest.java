@@ -50,6 +50,7 @@ public class CreateMemberServiceTest {
 
             @BeforeEach
             void setUp() {
+                // given
                 given(memberRepository.existsByEmail(reqDto.getEmail())).willReturn(false);
                 given(memberRepository.existsByPhoneNumber(reqDto.getPhoneNumber())).willReturn(false);
             }
@@ -57,7 +58,10 @@ public class CreateMemberServiceTest {
             @Test
             @DisplayName("DTO 객체의 정보에 따라 Member를 생성하여 save 한다.")
             void it_create_member() {
+                // when
                 createMemberService.execute(reqDto);
+
+                // then
                 ArgumentCaptor<Member> memberCaptor = ArgumentCaptor.forClass(Member.class);
                 verify(memberRepository).save(memberCaptor.capture());
                 Member capturedMember = memberCaptor.getValue();
@@ -75,12 +79,14 @@ public class CreateMemberServiceTest {
 
             @BeforeEach
             void setUp() {
+                // given
                 given(memberRepository.existsByEmail(reqDto.getEmail())).willReturn(true);
             }
 
             @Test
             @DisplayName("Email 중복 예외를 던진다.")
             void it_throws_email_existing_exception() {
+                // when + then
                 assertThrows(RuntimeException.class, () -> createMemberService.execute(reqDto));
             }
         }
@@ -91,12 +97,14 @@ public class CreateMemberServiceTest {
 
             @BeforeEach
             void setUp() {
+                // given
                 given(memberRepository.existsByPhoneNumber(reqDto.getPhoneNumber())).willReturn(true);
             }
 
             @Test
             @DisplayName("PhoneNumber 중복 예외를 던진다.")
             void it_throws_phone_number_existing_exception() {
+                // when + then
                 assertThrows(RuntimeException.class, () -> createMemberService.execute(reqDto));
             }
         }
