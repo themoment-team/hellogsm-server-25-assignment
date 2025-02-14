@@ -53,7 +53,6 @@ public class UpdateMemberServiceTest {
         class Context_with_member_update_dto {
             @BeforeEach
             void setUp(){
-                when(memberRepository.existsByEmail(reqDto.getEmail())).thenReturn(false);
                 given(memberRepository.existsByEmail(reqDto.getEmail())).willReturn(false);
                 given(memberRepository.existsByPhoneNumber(reqDto.getPhoneNumber())).willReturn(false);
                 given(memberRepository.findById(memberId)).willReturn(Optional.of(member));
