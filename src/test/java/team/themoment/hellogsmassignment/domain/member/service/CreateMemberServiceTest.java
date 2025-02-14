@@ -53,7 +53,14 @@ public class CreateMemberServiceTest {
             @Test
             @DisplayName("DTO 객체의 정보에 따라 Member를 생성하여 save 한다.")
             void it_creates_and_saves_member() {
+                //given: 올바른 CreateMemberReqDto가 주어졌을때
+                given(memberRepository.existsByEmail(createMemberReqDto.getEmail())).willReturn(false);
+                given(memberRepository.existsByEmail(createMemberReqDto.getPhoneNumber())).willReturn(false);
+
+                //when: CreateMemberService의 execute메서드를 실행하면
                 createMemberService.execute(createMemberReqDto);
+
+                //then: Dto의 정보에 따라 Member를 생성하고 save 한다.
                 ArgumentCaptor<Member> captor = ArgumentCaptor.forClass(Member.class);
                 verify(memberRepository).save(captor.capture());
                 Member member = captor.getValue();
@@ -75,7 +82,14 @@ public class CreateMemberServiceTest {
             @Test
             @DisplayName("RuntimeException을 던진다.")
             void it_throws_runtime_exception() {
-                assertThrows(RuntimeException.class, () -> createMemberService.execute(createMemberReqDto));
+                //given: emial이 중복된 CreateMemberReqDto가 주어졌을때
+                given(memberRepository.existsByEmail(createMemberReqDto.getEmail())).willReturn(true);
+
+                //then: RuntimeException을 던진다.
+                assertThrows(RuntimeException.class,
+                        //when: CreateMemberService의 execute메서드를 실행하면
+                        () -> createMemberService.execute(createMemberReqDto)
+                );
             }
         }
         @Nested
@@ -93,7 +107,14 @@ public class CreateMemberServiceTest {
             @Test
             @DisplayName("RuntimeException을 던진다.")
             void it_throws_runtime_exception() {
-                assertThrows(RuntimeException.class, () -> createMemberService.execute(createMemberReqDto));
+                //given: phoneNumber가 중복된 CreateMemberReqDto가 주어졌을때
+                given(memberRepository.existsByPhoneNumber(createMemberReqDto.getPhoneNumber())).willReturn(true);
+
+                //then: RuntimeException을 던진다.
+                assertThrows(RuntimeException.class,
+                        //when: CreateMemberService의 execute메서드를 실행하면
+                        () -> createMemberService.execute(createMemberReqDto)
+                );
             }
         }
     }

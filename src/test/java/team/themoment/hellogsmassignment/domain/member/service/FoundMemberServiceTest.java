@@ -43,10 +43,6 @@ public class FoundMemberServiceTest {
                     .phoneNumber("01012345678")
                     .birth(LocalDate.of(2000, 1, 1))
                     .build();
-            @BeforeEach
-            void setUp(){
-                given(memberRepository.findById(memberId)).willReturn(Optional.of(member));
-            }
             /**
              * @given 존재하는 memeberId가 주어졌을 때
              * @when FoundMemberService의 execute를 실행하면
@@ -55,7 +51,13 @@ public class FoundMemberServiceTest {
             @Test
             @DisplayName("Member를 조회하여 적절한 ResDTO를 반환한다.")
             void it_returns_resDto(){
+                //given: 존재하는 memeberId가 주어졌을 때
+                given(memberRepository.findById(memberId)).willReturn(Optional.of(member));
+
+                //when: FoundMemberService의 execute를 실행하면
                 FoundMemberResDto result = foundMemberService.execute(memberId);
+
+                //then: Member를 조회하여 FoundMemberResDto를 반환한다.
                 assertEquals(result.memberId(),memberId);
                 assertEquals(result.name(),member.getName());
                 assertEquals(result.birth(),member.getBirth());
@@ -65,10 +67,6 @@ public class FoundMemberServiceTest {
         @Nested
         @DisplayName("존재하지 않는 Member ID가 주어졌을 때")
         class Context_with_not_found_member_id {
-            @BeforeEach
-            void setUp(){
-                given(memberRepository.findById(memberId)).willReturn(Optional.empty());
-            }
             /**
              * @given 존재하지 않는 memeberId가 주어졌을 때
              * @when FoundMemberService의 execute를 실행하면
@@ -77,7 +75,13 @@ public class FoundMemberServiceTest {
             @Test
             @DisplayName("Member ID 찾을 수 없음 예외를 던진다.")
             void it_throws_runtime_exception(){
-                assertThrows(RuntimeException.class,()->foundMemberService.execute(memberId));
+                //given: 존재하지 않는 memeberId가 주어졌을 때
+                given(memberRepository.findById(memberId)).willReturn(Optional.empty());
+                //then: RuntimeException을 던진다.
+                assertThrows(RuntimeException.class,
+                        //when: FoundMemberService의 execute를 실행하면
+                        ()->foundMemberService.execute(memberId)
+                );
             }
         }
     }
