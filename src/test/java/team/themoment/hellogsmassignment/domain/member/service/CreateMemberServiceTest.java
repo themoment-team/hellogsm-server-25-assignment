@@ -45,6 +45,11 @@ public class CreateMemberServiceTest {
         @Nested
         @DisplayName("Member 생성 DTO 객체가 주어졌을 때")
         class Context_with_CreateMemberReqDto {
+            /**
+             * @given 올바른 CreateMemberReqDto가 주어졌을때
+             * @when CreateMemberService의 execute메서드를 실행하면
+             * @then Dto의 정보에 따라 Member를 생성하고 save 한다.
+             */
             @Test
             @DisplayName("DTO 객체의 정보에 따라 Member를 생성하여 save 한다.")
             void it_creates_and_saves_member() {
@@ -62,6 +67,11 @@ public class CreateMemberServiceTest {
             void setUp(){
                 given(memberRepository.existsByEmail(createMemberReqDto.getEmail())).willReturn(true);
             }
+            /**
+             * @given emial이 중복된 CreateMemberReqDto가 주어졌을때
+             * @when CreateMemberService의 execute메서드를 실행하면
+             * @then RuntimeException을 던진다.
+             */
             @Test
             @DisplayName("RuntimeException을 던진다.")
             void it_throws_runtime_exception() {
@@ -75,6 +85,11 @@ public class CreateMemberServiceTest {
             void setUp(){
                 given(memberRepository.existsByPhoneNumber(createMemberReqDto.getPhoneNumber())).willReturn(true);
             }
+            /**
+             * @given phoneNumber가 중복된 CreateMemberReqDto가 주어졌을때
+             * @when CreateMemberService의 execute메서드를 실행하면
+             * @then RuntimeException을 던진다.
+             */
             @Test
             @DisplayName("RuntimeException을 던진다.")
             void it_throws_runtime_exception() {

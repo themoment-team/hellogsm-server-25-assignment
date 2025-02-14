@@ -47,6 +47,11 @@ public class FoundMemberServiceTest {
             void setUp(){
                 given(memberRepository.findById(memberId)).willReturn(Optional.of(member));
             }
+            /**
+             * @given 존재하는 memeberId가 주어졌을 때
+             * @when FoundMemberService의 execute를 실행하면
+             * @then Member를 조회하여 FoundMemberResDto를 반환한다.
+             */
             @Test
             @DisplayName("Member를 조회하여 적절한 ResDTO를 반환한다.")
             void it_returns_resDto(){
@@ -64,6 +69,11 @@ public class FoundMemberServiceTest {
             void setUp(){
                 given(memberRepository.findById(memberId)).willReturn(Optional.empty());
             }
+            /**
+             * @given 존재하지 않는 memeberId가 주어졌을 때
+             * @when FoundMemberService의 execute를 실행하면
+             * @then RuntimeException을 던진다.
+             */
             @Test
             @DisplayName("Member ID 찾을 수 없음 예외를 던진다.")
             void it_throws_runtime_exception(){
