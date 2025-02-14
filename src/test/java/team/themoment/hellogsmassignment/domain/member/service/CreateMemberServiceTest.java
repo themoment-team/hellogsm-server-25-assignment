@@ -70,10 +70,6 @@ public class CreateMemberServiceTest {
         @Nested
         @DisplayName("중복된 Email이 주어졌을 때")
         class Context_with_duplicate_email {
-            @BeforeEach
-            void setUp(){
-                given(memberRepository.existsByEmail(createMemberReqDto.getEmail())).willReturn(true);
-            }
             /**
              * @given emial이 중복된 CreateMemberReqDto가 주어졌을때
              * @when CreateMemberService의 execute메서드를 실행하면
@@ -95,10 +91,6 @@ public class CreateMemberServiceTest {
         @Nested
         @DisplayName("중복된 PhoneNumber가 주어졌을 때")
         class Context_with_duplicate_phone_number {
-            @BeforeEach
-            void setUp(){
-                given(memberRepository.existsByPhoneNumber(createMemberReqDto.getPhoneNumber())).willReturn(true);
-            }
             /**
              * @given phoneNumber가 중복된 CreateMemberReqDto가 주어졌을때
              * @when CreateMemberService의 execute메서드를 실행하면
