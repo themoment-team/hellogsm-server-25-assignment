@@ -11,9 +11,9 @@ import team.themoment.hellogsmassignment.domain.order.entity.type.OrderStatus;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long>, OrderRepositoryCustom {
 
-    @Query("SELECT o FROM Order o " +
+/*    @Query("SELECT o FROM Order o " +
             "WHERE (:status IS NULL OR o.status = :status) " +
             "AND (:minPrice IS NULL OR o.totalPrice >= :minPrice) " +
             "AND (:maxPrice IS NULL OR o.totalPrice <= :maxPrice) " +
@@ -37,5 +37,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
                              @Param("maxPrice") BigDecimal maxPrice,
                              @Param("startDate") LocalDateTime startDate,
                              @Param("endDate") LocalDateTime endDate);
-
+*/
 }
