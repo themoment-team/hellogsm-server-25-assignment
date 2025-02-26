@@ -51,12 +51,16 @@ public class OrderService {
             OrderStatus status, BigDecimal minPrice, BigDecimal maxPrice,
             LocalDate startDate, LocalDate endDate, Pageable pageable
     ) {
-        Page<Order> orders = orderRepository.searchOrders(status, minPrice, maxPrice, startDate != null ? startDate.atStartOfDay() : null, endDate != null ? endDate.atStartOfDay() : null, pageable);
-        int count = orderRepository.countSearchOrder(status, minPrice, maxPrice, startDate != null ? startDate.atStartOfDay() : null, endDate != null ? endDate.atStartOfDay() : null);
+        Page<Order> orders = orderRepository.searchOrders(
+                status, minPrice, maxPrice,
+                startDate != null ? startDate.atStartOfDay() : null,
+                endDate != null ? endDate.atStartOfDay() : null,
+                pageable
+        );
 
         SearchOrderInfoDto searchOrderInfoDto = SearchOrderInfoDto.builder()
                 .totalPages(orders.getTotalPages())
-                .totalElements(count)
+                .totalElements((int) orders.getTotalElements())
                 .build();
 
         List<SearchOrderResDto> searchOrderResDtos = orders.getContent().stream()
@@ -75,5 +79,4 @@ public class OrderService {
                 .orders(searchOrderResDtos)
                 .build();
     }
-
 }
