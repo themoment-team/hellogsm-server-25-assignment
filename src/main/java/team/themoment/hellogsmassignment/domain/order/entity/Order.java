@@ -2,6 +2,7 @@ package team.themoment.hellogsmassignment.domain.order.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import team.themoment.hellogsmassignment.domain.member.entity.Member;
 import team.themoment.hellogsmassignment.domain.order.entity.type.OrderStatus;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Table(name = "tb_order")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@BatchSize(size = 100)
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +35,7 @@ public class Order {
     private OrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @BatchSize(size = 50)
     private List<OrderItem> orderItems;
 
     @Column(name = "created_time", updatable = false, nullable = false)
