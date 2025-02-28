@@ -7,11 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import team.themoment.hellogsmassignment.domain.order.entity.Order;
 import team.themoment.hellogsmassignment.domain.order.entity.type.OrderStatus;
+import team.themoment.hellogsmassignment.domain.order.repo.custom.CustomOrderRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long>, CustomOrderRepository {
 
     @Query("SELECT o FROM Order o " +
             "WHERE (:status IS NULL OR o.status = :status) " +
@@ -19,12 +20,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "AND (:maxPrice IS NULL OR o.totalPrice <= :maxPrice) " +
             "AND (:startDate IS NULL OR o.createdTime >= :startDate) " +
             "AND (:endDate IS NULL OR o.createdTime <= :endDate)")
-    Page<Order> searchOrders(@Param("status") OrderStatus status,
-                             @Param("minPrice") BigDecimal minPrice,
-                             @Param("maxPrice") BigDecimal maxPrice,
-                             @Param("startDate") LocalDateTime startDate,
-                             @Param("endDate") LocalDateTime endDate,
-                             Pageable pageable);
+    Page<Order> searchOrdersLegacy(@Param("status") OrderStatus status,
+                                   @Param("minPrice") BigDecimal minPrice,
+                                   @Param("maxPrice") BigDecimal maxPrice,
+                                   @Param("startDate") LocalDateTime startDate,
+                                   @Param("endDate") LocalDateTime endDate,
+                                   Pageable pageable);
 
     @Query("SELECT count(*) FROM Order o " +
             "WHERE (:status IS NULL OR o.status = :status) " +
@@ -32,10 +33,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "AND (:maxPrice IS NULL OR o.totalPrice <= :maxPrice) " +
             "AND (:startDate IS NULL OR o.createdTime >= :startDate) " +
             "AND (:endDate IS NULL OR o.createdTime <= :endDate)")
-    int countSearchOrder(@Param("status") OrderStatus status,
-                             @Param("minPrice") BigDecimal minPrice,
-                             @Param("maxPrice") BigDecimal maxPrice,
-                             @Param("startDate") LocalDateTime startDate,
-                             @Param("endDate") LocalDateTime endDate);
+    int countSearchOrderLegacy(@Param("status") OrderStatus status,
+                               @Param("minPrice") BigDecimal minPrice,
+                               @Param("maxPrice") BigDecimal maxPrice,
+                               @Param("startDate") LocalDateTime startDate,
+                               @Param("endDate") LocalDateTime endDate);
 
 }
