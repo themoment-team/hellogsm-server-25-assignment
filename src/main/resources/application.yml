@@ -8,7 +8,10 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: ${DDL_AUTO:update}
-#  sql:
+    properties:
+      hibernate:
+        format_sql: true
+  #  sql:
 #    init:
 #      mode: always
   datasource:
