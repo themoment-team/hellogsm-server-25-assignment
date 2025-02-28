@@ -1,5 +1,6 @@
 package team.themoment.hellogsmassignment.domain.order.repo.custom.impl;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -35,29 +36,24 @@ public class CustomOrderRepositoryImpl implements CustomOrderRepository {
 
     @Override
     public Page<Order> searchOrders(OrderStatus status, BigDecimal minPrice, BigDecimal maxPrice, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
+        BooleanBuilder searchCondition = new BooleanBuilder();
+        if(status != null){searchCondition.and(order.status.eq(status));}
+        if(minPrice != null){searchCondition.and(order.totalPrice.goe(minPrice));}
+        if(maxPrice != null){searchCondition.and(order.totalPrice.loe(maxPrice));}
+        if(startDate != null){searchCondition.and(order.createdTime.goe(startDate));}
+        if(endDate != null){searchCondition.and(order.createdTime.loe(endDate));}
+
         List<Order> orders = queryFactory.selectFrom(order)
                 .join(order.orderItems, orderItem).fetchJoin()
                 .join(orderItem.product,product).fetchJoin()
                 .join(order.member, member).fetchJoin()
-                .where(
-                        status != null ? order.status.eq(status) : null,
-                        minPrice != null ? order.totalPrice.goe(minPrice) : null,
-                        maxPrice != null ? order.totalPrice.loe(maxPrice) : null,
-                        startDate != null ? order.createdTime.goe(startDate) : null,
-                        endDate != null ? order.createdTime.loe(endDate) : null
-                )
+                .where(searchCondition)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
         long count = queryFactory.select(order.count())
                 .from(order)
-                .where(
-                        status != null ? order.status.eq(status) : null,
-                        minPrice != null ? order.totalPrice.goe(minPrice) : null,
-                        maxPrice != null ? order.totalPrice.loe(maxPrice) : null,
-                        startDate != null ? order.createdTime.goe(startDate) : null,
-                        endDate != null ? order.createdTime.loe(endDate) : null
-                )
+                .where(searchCondition)
                 .fetchOne();
         return new PageImpl<>(orders, pageable, count);
     }
