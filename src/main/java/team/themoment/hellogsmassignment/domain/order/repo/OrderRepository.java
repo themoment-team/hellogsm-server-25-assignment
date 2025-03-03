@@ -7,11 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import team.themoment.hellogsmassignment.domain.order.entity.Order;
 import team.themoment.hellogsmassignment.domain.order.entity.type.OrderStatus;
+import team.themoment.hellogsmassignment.domain.order.repo.custom.repo.CustomOrderRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long>, CustomOrderRepository {
 
     @Query("SELECT o FROM Order o " +
             "WHERE (:status IS NULL OR o.status = :status) " +
