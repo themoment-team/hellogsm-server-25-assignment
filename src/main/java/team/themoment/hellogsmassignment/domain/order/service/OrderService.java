@@ -9,6 +9,7 @@ import team.themoment.hellogsmassignment.domain.order.dto.response.*;
 import team.themoment.hellogsmassignment.domain.order.entity.Order;
 import team.themoment.hellogsmassignment.domain.order.entity.type.OrderStatus;
 import team.themoment.hellogsmassignment.domain.order.repo.OrderRepository;
+import team.themoment.hellogsmassignment.domain.order.repo.custom.repo.CustomOrderRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,7 +24,10 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public QueryOrderResDto queryOrder(Long orderId) {
-        Order order = orderRepository.findById(orderId)
+//        Order order = orderRepository.findById(orderId)
+//                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        Order order = orderRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
         List<OrderItemDto> orderItemDtos = order.getOrderItems().stream()
@@ -51,12 +55,12 @@ public class OrderService {
             OrderStatus status, BigDecimal minPrice, BigDecimal maxPrice,
             LocalDate startDate, LocalDate endDate, Pageable pageable
     ) {
-        Page<Order> orders = orderRepository.searchOrders(status, minPrice, maxPrice, startDate != null ? startDate.atStartOfDay() : null, endDate != null ? endDate.atStartOfDay() : null, pageable);
-        int count = orderRepository.countSearchOrder(status, minPrice, maxPrice, startDate != null ? startDate.atStartOfDay() : null, endDate != null ? endDate.atStartOfDay() : null);
+        Page<Order> orders = orderRepository.customSearchOrders(status, minPrice, maxPrice, startDate != null ? startDate.atStartOfDay() : null, endDate != null ? endDate.atStartOfDay() : null, pageable);
+//        int count = orderRepository.countSearchOrder(status, minPrice, maxPrice, startDate != null ? startDate.atStartOfDay() : null, endDate != null ? endDate.atStartOfDay() : null);
 
         SearchOrderInfoDto searchOrderInfoDto = SearchOrderInfoDto.builder()
                 .totalPages(orders.getTotalPages())
-                .totalElements(count)
+                .totalElements(orders.getTotalPages())
                 .build();
 
         List<SearchOrderResDto> searchOrderResDtos = orders.getContent().stream()
